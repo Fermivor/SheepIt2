@@ -7,6 +7,9 @@ public class GameData : NetworkBehaviour
 {
     List<PlayerInfo> m_playerList = new List<PlayerInfo>();
     static public GameData INSTANCE;
+
+    int m_uniqueID = 0;
+
     void Start()
     {
         if (INSTANCE != null && INSTANCE != this)
@@ -33,6 +36,11 @@ public class GameData : NetworkBehaviour
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject go in players)
         {
+            if (isServer)
+            {
+                go.GetComponent<PlayerInfo>().UniqueId = m_uniqueID;
+                ++m_uniqueID;
+            }
             AddPlayerInfo(go.GetComponent<PlayerInfo>());
         }
     }
@@ -47,19 +55,36 @@ public class GameData : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
-    public void RpcDeletePlayerInfoObsolete(int id)
+    [Command]
+    public void CmdDeletePlayerInfoObsolete(int a_connectionId)
     {
         Debug.Log("Delete Obsolete");
         for(int i = m_playerList.Count - 1; i >= 0; --i)
         {
-            if(m_playerList[i].connectionToClient == null || m_playerList[i].GetPlayerId() == id)
+            if(m_playerList[i].GetPlayerId() == a_connectionId)
             {
-
+                Debug.Log("Destroy PlayerInfo " + i);
+                RpcDeletePlayerInfoObsolete(m_playerList[i].UniqueId);
                 m_playerList.RemoveAt(i);
+
 
             }
         }
+    }
+
+    [ClientRpc]
+    public void RpcDeletePlayerInfoObsolete(int a_uniqueId)
+    {
+        for (int i = m_playerList.Count - 1; i >= 0; --i)
+        {
+            if (m_playerList[i].UniqueId == a_uniqueId)
+            {
+                Debug.Log("Destroy PlayerInfo " + i);
+                m_playerList.RemoveAt(i);
+                break;
+            }
+        }
+
     }
 
     public PlayerInfo GetPlayerInfo(int iConnectionID)

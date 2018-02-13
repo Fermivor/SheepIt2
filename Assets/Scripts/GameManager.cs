@@ -143,6 +143,7 @@ public class GameManager : NetworkBehaviour
         foreach (PlayerInfo playerInfo in list)
         {
             Debug.Log("NamePlayer " + playerInfo.GetName());
+            playerInfo.gameObject.GetComponent<PlayerController>().RpcSetPosition(m_spawnPoints[currentSpawn % m_spawnPoints.Length].transform.position);
             AnimalType type;
             if(i == m_preda)
             {
@@ -155,7 +156,6 @@ public class GameManager : NetworkBehaviour
                 type = AnimalType.SHEEP;
             }
             playerInfo.gameObject.GetComponent<PlayerController>().RpcSetSkin(type);
-            playerInfo.gameObject.GetComponent<PlayerController>().RpcSetPosition(m_spawnPoints[currentSpawn%m_spawnPoints.Length].transform.position);
             playerInfo.IsAlive = true;
             ++currentSpawn;
             ++i;
@@ -163,11 +163,14 @@ public class GameManager : NetworkBehaviour
 
 		m_timerRound.StartTimer (m_roundMaxTime, () => { EndOfRound(); /*StartRound();*/ });
         StartCoroutine(StartRoundCoroutine());
+
     }
 
     IEnumerator StartRoundCoroutine()
     {
-        yield return new WaitForSeconds(0.2f);
+    
+        yield return new WaitForSeconds(2.0f);
+        Debug.Log("StartRound");
         m_roundStarted = true;
 
     }
@@ -184,10 +187,7 @@ public class GameManager : NetworkBehaviour
             {
                 playerInfo.IncrementScore();
             }
-
         }
-
-
         StartRound();
     }
 

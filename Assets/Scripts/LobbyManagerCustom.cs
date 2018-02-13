@@ -7,14 +7,14 @@ using UnityEngine.Networking;
 public class LobbyManagerCustom : Prototype.NetworkLobby.LobbyManager
 {
 
-    
 
     public override void OnServerDisconnect(NetworkConnection conn)
     {
         Debug.Log("Disconnection handle");
-        GameData.INSTANCE.RpcDeletePlayerInfoObsolete(conn.connectionId);
+        GameData.INSTANCE.CmdDeletePlayerInfoObsolete(conn.connectionId);
         base.OnServerDisconnect(conn);
     }
+
 
     public override void OnServerSceneChanged(string sceneName)
     {        

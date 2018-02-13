@@ -17,7 +17,8 @@ public class PlayerInfo  : NetworkBehaviour/*_ pour partager et sync de partout 
     bool m_isAlive;
     [SyncVar(hook = "OnIsPredaChange")]
     bool m_isPreda;
-
+    [SyncVar(hook = "OnUniqueIdChange")]
+    int m_uniqueId;
 
 
     public PlayerInfo(Color iPlayerColor, string iPlayerName)
@@ -63,6 +64,19 @@ public class PlayerInfo  : NetworkBehaviour/*_ pour partager et sync de partout 
         set
         {
             m_isPreda = value;
+        }
+    }
+
+    public int UniqueId
+    {
+        get
+        {
+            return m_uniqueId;
+        }
+
+        set
+        {
+            m_uniqueId = value;
         }
     }
 
@@ -119,6 +133,12 @@ public class PlayerInfo  : NetworkBehaviour/*_ pour partager et sync de partout 
     {
         Debug.Log("ChangeIsPreda " + a_bool);
         IsPreda = a_bool;
+    }
+
+    void OnUniqueIdChange(int a_uniqueId)
+    {
+        Debug.Log("ChangeUniqueID " + a_uniqueId);
+        UniqueId = a_uniqueId;
     }
 
 }

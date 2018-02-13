@@ -48,8 +48,8 @@ public class PlayerController : NetworkBehaviour {
                 //if this object is a predator and the collison is a prey
                 if (!GetComponent<PlayerInfo>().IsPreda && isCollPredator)
                 {
-                    DestroyYourSkin();
-                    DestroyYourAbility();
+                   // DestroyYourSkin();
+                  //  DestroyYourAbility();
 
                     Debug.Log("Collided between predator and prey");
                     GameManager.INSTANCE.AddPoint(coll.gameObject.GetComponent<NetworkIdentity>().clientAuthorityOwner.connectionId, gameObject.GetComponent<NetworkIdentity>().clientAuthorityOwner.connectionId);

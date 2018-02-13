@@ -12,11 +12,13 @@ public class ScoreMenu : Menu {
     GameObject m_TabDisplay;
     private void OnEnable()
     {
-         if(m_TabDisplay.transform.childCount > 0 || !GameData.INSTANCE)
+         if(!GameData.INSTANCE || m_TabDisplay.transform.childCount == GameData.INSTANCE.GetNumberPlayer() )
         {
             return;
         }
         //start get score from gamemanager
+        Util.DestroyChilds(m_TabDisplay.transform);
+        Debug.Log("Add childs " + GameData.INSTANCE.GetNumberPlayer());
         foreach (PlayerInfo info in GameData.INSTANCE.GetPlayerInfoList())
         {
             GameObject go = GameObject.Instantiate(m_PrefabPlayerInfoDisplayer);
