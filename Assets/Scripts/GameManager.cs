@@ -55,12 +55,21 @@ public class GameManager : NetworkBehaviour
 
             
 		}
-       /* List<PlayerInfo> list = GameData.INSTANCE.GetPlayerInfoList();
-        foreach(PlayerInfo info in list)
-        {
-        //    info.IncrementScore();
-        }*/
+        /* List<PlayerInfo> list = GameData.INSTANCE.GetPlayerInfoList();
+         foreach(PlayerInfo info in list)
+         {
+         //    info.IncrementScore();
+         }*/
 
+
+        List<PlayerInfo> alive = GameData.INSTANCE.GetPlayerInfoList().FindAll(o => o.IsAlive && !o.IsPreda);
+        List<PlayerInfo> predas = GameData.INSTANCE.GetPlayerInfoList().FindAll(o => o.IsPreda); 
+        if ((alive.Count == 0 || predas.Count == 0) && m_roundStarted)
+        {
+            Debug.Log("Add Point end of round");
+
+            EndOfRound();
+        }
 
     }
 
@@ -191,9 +200,9 @@ public class GameManager : NetworkBehaviour
         StartRound();
     }
 
-    //think to change the way to put a preda and handle the TAB disparition && synchronize the gamedata remove && anchor of tab menu && finir le jeu si ya plus personne en vie après la deco
-    // doit^^etreconnectionToServer du côté client et connectionToClient du côté client
-    
+    //Genre cait un confirm des côté client avant de lancer le round mais gaffe aux deco dans c emoment
+
+
     public void AddPoint(int a_predator, int a_victim)
     {
         if (!m_roundStarted)
@@ -209,14 +218,7 @@ public class GameManager : NetworkBehaviour
         PlayerInfo predaInfos = GameData.INSTANCE.GetPlayerInfo (a_predator);
 		predaInfos.IncrementScore();
 
-
-        List<PlayerInfo> alive = GameData.INSTANCE.GetPlayerInfoList().FindAll(o => o.IsAlive && !o.IsPreda);
-        if (alive.Count == 0)
-        {
-            Debug.Log("Add Point end of round");
-
-            EndOfRound();
-        }
+      
     }
 
     public void SpawnObject(GameObject a_object, Vector3 a_position, Quaternion a_rotation)
