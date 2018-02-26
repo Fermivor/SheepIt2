@@ -61,14 +61,16 @@ public class GameManager : NetworkBehaviour
          //    info.IncrementScore();
          }*/
 
-
-        List<PlayerInfo> alive = GameData.INSTANCE.GetPlayerInfoList().FindAll(o => o.IsAlive && !o.IsPreda);
-        List<PlayerInfo> predas = GameData.INSTANCE.GetPlayerInfoList().FindAll(o => o.IsPreda); 
-        if ((alive.Count == 0 || predas.Count == 0) && m_roundStarted)
+        if (m_roundStarted)
         {
-            Debug.Log("Add Point end of round");
+            List<PlayerInfo> alive = GameData.INSTANCE.GetPlayerInfoList().FindAll(o => o.IsAlive && !o.IsPreda);
+            List<PlayerInfo> predas = GameData.INSTANCE.GetPlayerInfoList().FindAll(o => o.IsPreda);
+            if ((alive.Count == 0 || predas.Count == 0) && m_roundStarted)
+            {
+                Debug.Log("Add Point end of round");
 
-            EndOfRound();
+                EndOfRound();
+            }
         }
 
     }
@@ -103,7 +105,7 @@ public class GameManager : NetworkBehaviour
         foreach (PlayerInfo playerInfo in list)
         {
             LobbyPlayer lobbyPlayer = _lobbyPlayerList.Find(o => o.connectionToClient.connectionId == playerInfo.GetPlayerId());
-            playerInfo.setData(lobbyPlayer.playerColor, lobbyPlayer.playerName);
+            playerInfo.SetData(lobbyPlayer.playerColor, lobbyPlayer.playerName);
         }
 
 
@@ -152,6 +154,7 @@ public class GameManager : NetworkBehaviour
         foreach (PlayerInfo playerInfo in list)
         {
             Debug.Log("NamePlayer " + playerInfo.GetName());
+            playerInfo.IsPositionSetted = false;
             playerInfo.gameObject.GetComponent<PlayerController>().RpcSetPosition(m_spawnPoints[currentSpawn % m_spawnPoints.Length].transform.position);
             AnimalType type;
             if(i == m_preda)
@@ -177,8 +180,15 @@ public class GameManager : NetworkBehaviour
 
     IEnumerator StartRoundCoroutine()
     {
-    
-        yield return new WaitForSeconds(2.0f);
+        while (true)
+        {
+            yield return new WaitForSeconds(0.5f);
+            List<PlayerInfo> positionSetted = GameData.INSTANCE.GetPlayerInfoList().FindAll(o => o.IsPositionSetted);
+            if (positionSetted.Count == GameData.INSTANCE.GetNumberPlayer())
+            {
+                break;
+            }
+        }
         Debug.Log("StartRound");
         m_roundStarted = true;
 
@@ -199,9 +209,6 @@ public class GameManager : NetworkBehaviour
         }
         StartRound();
     }
-
-    //Genre cait un confirm des côté client avant de lancer le round mais gaffe aux deco dans c emoment
-
 
     public void AddPoint(int a_predator, int a_victim)
     {

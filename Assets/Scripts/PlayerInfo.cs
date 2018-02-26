@@ -17,6 +17,8 @@ public class PlayerInfo  : NetworkBehaviour/*_ pour partager et sync de partout 
     bool m_isAlive;
     [SyncVar(hook = "OnIsPredaChange")]
     bool m_isPreda;
+    [SyncVar(hook = "OnIsPositionSetted")]
+    bool m_isPositionSetted;
     [SyncVar(hook = "OnUniqueIdChange")]
     int m_uniqueId;
 
@@ -80,6 +82,19 @@ public class PlayerInfo  : NetworkBehaviour/*_ pour partager et sync de partout 
         }
     }
 
+    public bool IsPositionSetted
+    {
+        get
+        {
+            return m_isPositionSetted;
+        }
+
+        set
+        {
+            m_isPositionSetted = value;
+        }
+    }
+
     public string GetName()
     {
         return m_name;
@@ -90,9 +105,14 @@ public class PlayerInfo  : NetworkBehaviour/*_ pour partager et sync de partout 
         ++Score;
     }
 
+    [Command]
+    public void CmdSetIsPositionSetted(bool a_bool)
+    {
+        IsPositionSetted = a_bool;
+    }
 
 
-    public void setData(Color playerColor, string playerName)
+    public void SetData(Color playerColor, string playerName)
     {
         m_color = playerColor;
         m_name = playerName;
@@ -135,6 +155,12 @@ public class PlayerInfo  : NetworkBehaviour/*_ pour partager et sync de partout 
         IsPreda = a_bool;
     }
 
+    void OnIsPositionSetted(bool a_bool)
+    {
+        Debug.Log("ChangeIsPositionSetted " + a_bool);
+        IsPositionSetted = a_bool;
+    }
+    
     void OnUniqueIdChange(int a_uniqueId)
     {
         Debug.Log("ChangeUniqueID " + a_uniqueId);

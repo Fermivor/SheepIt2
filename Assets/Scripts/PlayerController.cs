@@ -113,9 +113,10 @@ public class PlayerController : NetworkBehaviour {
     [ClientRpc]
     public void RpcSetPosition(Vector3 a_position)
     {
+        transform.position = a_position;
         if (isLocalPlayer)
         {
-            transform.position = a_position;
+            GetComponent<PlayerInfo>().CmdSetIsPositionSetted(true);
         }
     }
 
