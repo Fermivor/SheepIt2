@@ -49,7 +49,7 @@ public class GameManager : NetworkBehaviour
     }
 
 	void Update(){
-		if (m_timerRound.IsTimerRunning()) {
+		if (m_hud && m_timerRound.IsTimerRunning()) {
 			//Display time in UI
 			m_hud.RpcSetTimerTime (m_timerRound + "");
 
@@ -78,10 +78,17 @@ public class GameManager : NetworkBehaviour
 
     public void Init()
     {
-        if (m_isInit)
-        {
-            return;
-        }
+        /*if (m_isInit)
+         {
+             return;
+         }*/
+        m_timerRound.Stop();
+
+        StopAllCoroutines();
+        m_roundStarted = false;
+
+
+
         m_hud = GameObject.FindGameObjectWithTag("UI").GetComponent<HUDManager>();
 
         StartCoroutine(InitCoroutine());
@@ -93,6 +100,7 @@ public class GameManager : NetworkBehaviour
 
     IEnumerator InitCoroutine()
     {
+        Debug.Log("test");
         yield return new WaitForSeconds(2);
         List<LobbyPlayer> _lobbyPlayerList = LobbyPlayerListCustom.GetInstance().GetPlayerList();
 
