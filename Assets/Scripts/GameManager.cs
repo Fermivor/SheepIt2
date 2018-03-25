@@ -16,7 +16,10 @@ public class GameManager : NetworkBehaviour
     [SerializeField]
     GameObject m_spawnObjectsContainer;
 
-	HUDManager m_hud;
+    [SerializeField]
+    public GameObject m_spawnableBush;
+
+    HUDManager m_hud;
 
 	Timer m_timerRound;
     [SerializeField]
@@ -157,7 +160,6 @@ public class GameManager : NetworkBehaviour
         }
 
         List<PlayerInfo> list = GameData.INSTANCE.GetPlayerInfoList();
-        Debug.Log("count players" + list);
         int i = 0;
         foreach (PlayerInfo playerInfo in list)
         {
@@ -180,8 +182,13 @@ public class GameManager : NetworkBehaviour
             ++currentSpawn;
             ++i;
         }
+        
+        
+        //MAP GENERATION
+        MapGenerator.INSTANCE.GenerateMap();
 
-		m_timerRound.StartTimer (m_roundMaxTime, () => { EndOfRound(); /*StartRound();*/ });
+
+        m_timerRound.StartTimer (m_roundMaxTime, () => { EndOfRound(); /*StartRound();*/ });
         StartCoroutine(StartRoundCoroutine());
 
     }
