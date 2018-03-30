@@ -45,9 +45,14 @@ public class MapGenerator : MonoBehaviour {
 
                 float sample = Mathf.PerlinNoise(coX, coY);
 
-                if (sample > 0.75)
+                if (sample > 0.7)
                 {
-                    GameManager.INSTANCE.SpawnObject(GameManager.INSTANCE.m_spawnableBush, new Vector3(x, y, 0), new Quaternion(0, 0, 0, 0));
+                    //random rotation for the bush
+                    Quaternion bush_rot = Quaternion.AngleAxis(Random.Range(0f, 360f), Vector3.forward);
+                    
+                    
+                    //Spawn the bush
+                    GameManager.INSTANCE.SpawnObject(GameManager.INSTANCE.m_spawnableBush, new Vector3(x, y, 0), bush_rot);
                 }
             }
         }
