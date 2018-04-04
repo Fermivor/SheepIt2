@@ -49,10 +49,20 @@ public class MapGenerator : MonoBehaviour {
                 {
                     //random rotation for the bush
                     Quaternion bush_rot = Quaternion.AngleAxis(Random.Range(0f, 360f), Vector3.forward);
+
+                    float spawnableType = Random.Range(0f, 1f);
+                    if (spawnableType > 0.1f)
+                    {
+                        //Spawn a bush
+                        GameManager.INSTANCE.SpawnObject(GameManager.INSTANCE.m_spawnableBush, new Vector3(x, y, 0), bush_rot);
+                    }
+                    else
+                    {
+                        //Spawn a rock
+                        GameManager.INSTANCE.SpawnObject(GameManager.INSTANCE.m_spawnableRock, new Vector3(x, y, 0), bush_rot);
+                    }
                     
                     
-                    //Spawn the bush
-                    GameManager.INSTANCE.SpawnObject(GameManager.INSTANCE.m_spawnableBush, new Vector3(x, y, 0), bush_rot);
                 }
             }
         }

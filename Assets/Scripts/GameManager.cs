@@ -19,6 +19,9 @@ public class GameManager : NetworkBehaviour
     [SerializeField]
     public GameObject m_spawnableBush;
 
+    [SerializeField]
+    public GameObject m_spawnableRock;
+
     HUDManager m_hud;
 
 	Timer m_timerRound;
