@@ -210,7 +210,7 @@ public class GameManager : NetworkBehaviour
         Debug.Log(MenuManager.INSTANCE);
         MenuManager.INSTANCE.RpcOpenMenu(MENUTYPE.CHRONO);
         Menu m = MenuManager.INSTANCE.OpenMenu(MENUTYPE.CHRONO);
-        ((TimerMenu)m).StartTimer(5000, () => { LaunchRound(); });
+        ((TimerMenu)m).StartTimer(3, () => { LaunchRound(); });
 
     }
 

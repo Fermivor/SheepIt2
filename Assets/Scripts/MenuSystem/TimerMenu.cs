@@ -42,7 +42,7 @@ public class TimerMenu : Menu {
 
     private void Update()
     {
-        m_display.text = m_timer.GetCurrentTime() + "";
+        m_display.text = Math.Ceiling(m_timer.GetTimeLeft()) + "";
         if (m_timer.IsTimeUp())
         {
             if (m_callback != null)
