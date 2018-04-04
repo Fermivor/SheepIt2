@@ -204,10 +204,18 @@ public class GameManager : NetworkBehaviour
                 break;
             }
         }
-        Debug.Log("StartRound");
-        m_roundStarted = true;
+        MenuManager.INSTANCE.RpcOpenMenu(MENUTYPE.CHRONO);
+        Menu m = MenuManager.INSTANCE.OpenMenu(MENUTYPE.CHRONO);
+        ((TimerMenu)m).RpcStartTimer(3);
 
     }
+
+    void LaunchRound()
+    {
+        Debug.Log("StartRound");
+        m_roundStarted = true;
+    }
+
 
     private void EndOfRound()
     {

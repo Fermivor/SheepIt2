@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public enum MENUTYPE {NOTHING, MAIN, END, GAME, PAUSE, SCORE};
+public enum MENUTYPE {NOTHING, MAIN, END, GAME, PAUSE, SCORE, CHRONO};
 
 
 [System.Serializable]
@@ -12,7 +13,7 @@ public class MenuEntry
 	public MENUTYPE m_type;
 	public Menu m_menu;
 }
-public class MenuManager : MonoBehaviour {
+public class MenuManager : NetworkBehaviour {
 	[SerializeField]
 	List<MenuEntry> m_listMenu;
 	static public MenuManager INSTANCE;
@@ -53,25 +54,28 @@ public class MenuManager : MonoBehaviour {
 
     }
 
-	public void OpenMenu(MENUTYPE a_type)
+	public Menu OpenMenu(MENUTYPE a_type)
 	{
-        if(a_type == m_currentMenu)
-        {
-            return;
-        }
-
-		CloseMenu();
 		MenuEntry menuEntry = m_listMenu.Find(x => x.m_type == a_type);
-		if (menuEntry != null)
+        if (menuEntry != null && a_type != m_currentMenu)
 		{
-			menuEntry.m_menu.gameObject.SetActive(true);
+            CloseMenu();
+            menuEntry.m_menu.gameObject.SetActive(true);
 			m_currentMenu = a_type;
 		}
+        return menuEntry.m_menu;
 
-	}
+    }
+
+    [ClientRpc]
+    public void RpcOpenMenu(MENUTYPE a_type)
+    {
+        OpenMenu(a_type);
+    }
 
 
-	public void CloseMenu()
+
+    public void CloseMenu()
 	{
 		MenuEntry menuEntry = m_listMenu.Find(x => x.m_type == m_currentMenu);
 		if(menuEntry != null)
