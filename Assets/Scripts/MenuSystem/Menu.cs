@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-
-public class Menu : MonoBehaviour
+public class Menu : NetworkBehaviour
 {
 	public void CloseMenu()
 	{
