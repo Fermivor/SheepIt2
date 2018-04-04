@@ -12,6 +12,8 @@ public class TimerMenu : Menu {
 
     Timer m_timer;
 
+    Action m_callback = null;
+
     private void Start()
     {
         m_timer = TimerFactory.INSTANCE.getTimer();
@@ -25,8 +27,15 @@ public class TimerMenu : Menu {
     {
     }
 
+    public void StartTimer(float a_time, Action a_callback = null)
+    { 
+        m_callback = a_callback;
+        RpcStartTimer(a_time);
+    }
+
+
     [ClientRpc]
-    public void RpcStartTimer(float a_time)
+    void RpcStartTimer(float a_time)
     {
         m_timer.StartTimer(a_time);
     }
@@ -34,6 +43,14 @@ public class TimerMenu : Menu {
     private void Update()
     {
         m_display.text = m_timer.GetCurrentTime() + "";
+        if (m_timer.IsTimeUp())
+        {
+            if (m_callback != null)
+            {
+                m_callback.Invoke();
+            }
+            CloseMenu();
+        }
     }
 
     public override float GetAlphaBack()

@@ -23,7 +23,7 @@ public class MenuManager : NetworkBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		if (INSTANCE != null && INSTANCE != this)
 		{
 			Destroy(gameObject);

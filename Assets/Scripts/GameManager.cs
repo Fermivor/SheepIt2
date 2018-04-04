@@ -204,9 +204,10 @@ public class GameManager : NetworkBehaviour
                 break;
             }
         }
+        Debug.Log(MenuManager.INSTANCE);
         MenuManager.INSTANCE.RpcOpenMenu(MENUTYPE.CHRONO);
         Menu m = MenuManager.INSTANCE.OpenMenu(MENUTYPE.CHRONO);
-        ((TimerMenu)m).RpcStartTimer(3);
+        ((TimerMenu)m).StartTimer(5000, () => { LaunchRound(); });
 
     }
 
