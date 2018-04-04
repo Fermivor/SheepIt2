@@ -14,13 +14,15 @@ public class TimerMenu : Menu {
 
     Action m_callback = null;
 
+    bool m_everRun;
+    
     private void Start()
     {
-        m_timer = TimerFactory.INSTANCE.getTimer();
     }
 
     private void OnEnable()
     {
+        m_everRun = false;
     }
 
     private void OnDisable()
@@ -30,26 +32,35 @@ public class TimerMenu : Menu {
     public void StartTimer(float a_time, Action a_callback = null)
     { 
         m_callback = a_callback;
-        RpcStartTimer(a_time);
+        if (m_timer == null)
+        {
+            m_timer = TimerFactory.INSTANCE.getTimer();
+        }
+        m_timer.StartTimer(a_time);
+        m_everRun = true;
     }
 
 
     [ClientRpc]
-    void RpcStartTimer(float a_time)
+    void RpcSetTime(string a_time)
     {
-        m_timer.StartTimer(a_time);
+        m_display.text = a_time;
     }
+
 
     private void Update()
     {
-        m_display.text = Math.Ceiling(m_timer.GetTimeLeft()) + "";
-        if (m_timer.IsTimeUp())
+        if (isServer)
         {
-            if (m_callback != null)
+            RpcSetTime(Math.Ceiling(m_timer.GetTimeLeft()) + "");
+            if (m_everRun && m_timer.IsTimeUp())
             {
-                m_callback.Invoke();
+                if (m_callback != null)
+                {
+                    m_callback.Invoke();
+                }
+                RpcCloseMenu();
             }
-            CloseMenu();
         }
     }
 

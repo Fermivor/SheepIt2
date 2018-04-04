@@ -208,8 +208,7 @@ public class GameManager : NetworkBehaviour
             }
         }
         Debug.Log(MenuManager.INSTANCE);
-        MenuManager.INSTANCE.RpcOpenMenu(MENUTYPE.CHRONO);
-        Menu m = MenuManager.INSTANCE.OpenMenu(MENUTYPE.CHRONO);
+        Menu m = MenuManager.INSTANCE.OpenMenuEverywhere(MENUTYPE.CHRONO);
         ((TimerMenu)m).StartTimer(3, () => { LaunchRound(); });
 
     }
