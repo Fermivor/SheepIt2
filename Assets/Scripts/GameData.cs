@@ -10,6 +10,7 @@ public class GameData : NetworkBehaviour
 
     int m_uniqueID = 0;
 
+    [SyncVar(hook = "OnIsGamePaused")]
     bool m_isGamePaused;
 
 
@@ -39,6 +40,7 @@ public class GameData : NetworkBehaviour
         }
     }
 
+    void OnIsGamePaused(bool a_bool)
     {
         Debug.Log("ChangeIsGamePaused " + a_bool);
         m_isGamePaused = a_bool;
