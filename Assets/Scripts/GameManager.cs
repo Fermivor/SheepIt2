@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
 
-public enum AnimalType { SHEEP, WOLF}
+public enum AnimalType { SHEEP, WOLF, PIG}
 
 public class GameManager : NetworkBehaviour
 {
