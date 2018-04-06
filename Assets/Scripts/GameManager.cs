@@ -178,7 +178,15 @@ public class GameManager : NetworkBehaviour
             else
             {
                 playerInfo.IsPreda = false;
-                type = AnimalType.SHEEP;
+                float preyType = UnityEngine.Random.Range(0f, 1f);
+                if(preyType > 0.5)
+                {
+                    type = AnimalType.SHEEP;
+                }
+                else
+                {
+                    type = AnimalType.PIG;
+                }
             }
             playerInfo.gameObject.GetComponent<PlayerController>().RpcSetSkin(type);
             playerInfo.IsAlive = true;

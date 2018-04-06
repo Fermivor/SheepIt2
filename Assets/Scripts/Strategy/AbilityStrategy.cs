@@ -5,8 +5,11 @@ using UnityEngine.Networking;
 
 public abstract class AbilityStrategy : MonoBehaviour {
 
-	[SerializeField]
-	private float _Speed = 5;
+    [SerializeField]
+    private float m_StartingSpeed = 4;
+
+    [SerializeField]
+	private float m_Speed = 4;
 
     protected GameObject m_player;
 
@@ -85,7 +88,7 @@ public abstract class AbilityStrategy : MonoBehaviour {
         {
             if ((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.Z)))
             {
-                result = _Speed;
+                result = m_Speed;
             }
 
         }
@@ -151,5 +154,10 @@ public abstract class AbilityStrategy : MonoBehaviour {
         {
             m_ability1Timer.Destroy();
         }
+    }
+
+    public void SetSpeed(float a_speed)
+    {
+        m_Speed = a_speed;
     }
 }
