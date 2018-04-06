@@ -11,6 +11,12 @@ public class Menu : NetworkBehaviour
 		MenuManager.INSTANCE.CloseMenu();
 	}
 
+    [ClientRpc]
+    protected void RpcCloseMenu()
+    {
+        CloseMenu();
+    }
+
 
     public virtual float GetAlphaBack()
     {

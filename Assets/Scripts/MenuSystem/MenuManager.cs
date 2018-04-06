@@ -31,16 +31,24 @@ public class MenuManager : NetworkBehaviour {
 		else
 		{
 			INSTANCE = this;
-			foreach(MenuEntry entry in m_listMenu)
-			{
-				entry.m_menu.gameObject.SetActive(false);
-			}
-			OpenMenu(m_startMenu);
 		}
+        StartCoroutine(StartUp());
 	}
 
-	// Update is called once per frame
-	void Update () {
+    IEnumerator StartUp()
+    {
+        yield return new WaitForSeconds(0.5f);
+        foreach (MenuEntry entry in m_listMenu)
+        {
+            entry.m_menu.gameObject.SetActive(false);
+        }
+        OpenMenu(m_startMenu);
+
+    }
+
+
+    // Update is called once per frame
+    void Update () {
 
 		MenuEntry menuEntry = INSTANCE.m_listMenu.Find(x => x.m_type == INSTANCE.m_currentMenu);
 		if (menuEntry != null)
@@ -66,6 +74,13 @@ public class MenuManager : NetworkBehaviour {
         return menuEntry != null ? menuEntry.m_menu : null;
 
     }
+
+    public Menu OpenMenuEverywhere(MENUTYPE a_type)
+    {
+        RpcOpenMenu(a_type);
+        return OpenMenu(a_type);
+    }
+
 
     [ClientRpc]
     public void RpcOpenMenu(MENUTYPE a_type)
