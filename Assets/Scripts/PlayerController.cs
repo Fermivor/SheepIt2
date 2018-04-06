@@ -14,6 +14,7 @@ public class PlayerController : NetworkBehaviour {
         Camera.main.GetComponent<CameraFollow>().SetPlayerToFollow(gameObject);
     }
 
+
     [ClientRpc]
 	public void RpcSetSkin(AnimalType type)
 	{
@@ -148,7 +149,7 @@ public class PlayerController : NetworkBehaviour {
 
     // Update is called once per frame
     void Update () {
-		if (!isLocalPlayer)
+		if (!isLocalPlayer || GameData.INSTANCE.IsGamePaused)
 		{
 			return;
 		}

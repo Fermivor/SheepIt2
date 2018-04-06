@@ -10,6 +10,24 @@ public class GameData : NetworkBehaviour
 
     int m_uniqueID = 0;
 
+    [SyncVar(hook = "OnIsGamePaused")]
+    bool m_isGamePaused;
+
+
+    public bool IsGamePaused
+    {
+        get
+        {
+            return m_isGamePaused;
+        }
+
+        set
+        {
+            m_isGamePaused = value;
+        }
+    }
+
+
     void Start()
     {
         if (INSTANCE != null && INSTANCE != this)
@@ -21,6 +39,13 @@ public class GameData : NetworkBehaviour
             INSTANCE = this;
         }
     }
+
+    void OnIsGamePaused(bool a_bool)
+    {
+        Debug.Log("ChangeIsGamePaused " + a_bool);
+        m_isGamePaused = a_bool;
+    }
+
 
     [ClientRpc]
     public void RpcRetrievePlayerInfo()
