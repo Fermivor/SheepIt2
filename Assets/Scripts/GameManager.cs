@@ -182,6 +182,7 @@ public class GameManager : NetworkBehaviour
             }
             playerInfo.gameObject.GetComponent<PlayerController>().RpcSetSkin(type);
             playerInfo.IsAlive = true;
+            GameData.INSTANCE.IsGamePaused = true;
             ++currentSpawn;
             ++i;
         }
@@ -209,7 +210,7 @@ public class GameManager : NetworkBehaviour
         }
         Debug.Log(MenuManager.INSTANCE);
         Menu m = MenuManager.INSTANCE.OpenMenuEverywhere(MENUTYPE.CHRONO);
-        ((TimerMenu)m).StartTimer(3, () => { LaunchRound(); });
+        ((TimerMenu)m).StartTimer(3, () => { LaunchRound(); GameData.INSTANCE.IsGamePaused = false; });
 
     }
 
