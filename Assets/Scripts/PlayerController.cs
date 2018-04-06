@@ -149,10 +149,15 @@ public class PlayerController : NetworkBehaviour {
 
     // Update is called once per frame
     void Update () {
-		if (!isLocalPlayer || GameData.INSTANCE.IsGamePaused)
+		if (!isLocalPlayer)
 		{
 			return;
 		}
+        if (GameData.INSTANCE.IsGamePaused)
+        {
+            GetComponent<Rigidbody2D>().velocity = new Vector3();
+            return;
+        }
 
 		//ScoreMenu
         if (Input.GetKeyDown(KeyCode.Tab))

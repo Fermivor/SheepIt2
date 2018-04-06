@@ -150,6 +150,9 @@ public class GameManager : NetworkBehaviour
 
     private void StartRound()
     {
+
+        Menu m = MenuManager.INSTANCE.OpenMenuEverywhere(MENUTYPE.LOADING);
+
         Util.DestroyChilds(m_spawnObjectsContainer.transform);
   
 
