@@ -174,7 +174,7 @@ public class PlayerController : NetworkBehaviour {
         }
         
         //Ability1
-        if (Input.GetKeyDown(KeyCode.A)){
+        if (Input.GetKeyDown(KeyCode.A) && GetComponent<PlayerInfo>().IsAlive){
             CmdTransmitInput((int)KeyCode.A);
 		}
 	
