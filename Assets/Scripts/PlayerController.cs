@@ -157,6 +157,7 @@ public class PlayerController : NetworkBehaviour {
         if (GameData.INSTANCE.IsGamePaused)
         {
             GetComponent<Rigidbody2D>().velocity = new Vector3();
+            GetComponent<Rigidbody2D>().angularVelocity = 0;
             return;
         }
 
