@@ -35,7 +35,7 @@ public class GameManager : NetworkBehaviour
     int m_preda = -1;
     int currentSpawn = 0;
     bool m_roundStarted = false;
-
+    System.Random m_random = new System.Random();
 
     void Start()
     {
@@ -161,7 +161,7 @@ public class GameManager : NetworkBehaviour
 
         Menu m = MenuManager.INSTANCE.OpenMenuEverywhere(MENUTYPE.LOADING);
 
-        Util.DestroyChilds(m_spawnObjectsContainer.transform);
+        Utils.DestroyChilds(m_spawnObjectsContainer.transform);
   
 
         ++m_preda;
@@ -189,8 +189,7 @@ public class GameManager : NetworkBehaviour
             else
             {
                 playerInfo.IsPreda = false;
-                float preyType = UnityEngine.Random.Range(0f, 1f);
-                if(preyType > 0.5)
+                if(Utils.RandomBool(m_random))
                 {
                     type = AnimalType.SHEEP;
                 }
