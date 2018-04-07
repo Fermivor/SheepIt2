@@ -179,7 +179,7 @@ public class GameManager : NetworkBehaviour
             {
                 playerInfo.IsPreda = false;
                 float preyType = UnityEngine.Random.Range(0f, 1f);
-                if(preyType > 0.5)
+                if(preyType > 1.5)
                 {
                     type = AnimalType.SHEEP;
                 }
