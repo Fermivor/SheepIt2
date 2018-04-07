@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 public class PlayerController : NetworkBehaviour {
 
-	private AbilityStrategy _Strat = new SheepStrategy();
+	private AbilityStrategy _Strat;
 
     private void Start()
     {
@@ -158,15 +158,19 @@ public class PlayerController : NetworkBehaviour {
 
     // Update is called once per frame
     void Update () {
-		if (!isLocalPlayer)
+		if (!isLocalPlayer || _Strat == null)
 		{
 			return;
 		}
+
         if (GameData.INSTANCE.IsGamePaused)
         {
             GetComponent<Rigidbody2D>().velocity = new Vector3();
+            GetComponent<Rigidbody2D>().angularVelocity = 0;
             return;
         }
+
+
 
 		//ScoreMenu
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -179,7 +183,7 @@ public class PlayerController : NetworkBehaviour {
         }
         
         //Ability1
-        if (Input.GetKeyDown(KeyCode.A)){
+        if (Input.GetKeyDown(KeyCode.A) && GetComponent<PlayerInfo>().IsAlive){
             CmdTransmitInput((int)KeyCode.A);
 		}
 	

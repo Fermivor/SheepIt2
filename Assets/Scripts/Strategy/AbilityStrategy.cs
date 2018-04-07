@@ -28,7 +28,7 @@ public abstract class AbilityStrategy : MonoBehaviour {
     protected float m_ability1Cooldown = 5.0f;
     protected Timer m_ability1Timer;
 
-
+    
     private void Start()
     {
         m_ability1Timer = TimerFactory.INSTANCE.getTimer();

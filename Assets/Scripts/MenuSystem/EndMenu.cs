@@ -23,7 +23,7 @@ public class EndMenu : Menu {
         foreach (PlayerInfo info in GameData.INSTANCE.GetPlayerInfoListByScore())
         {
             GameObject go = GameObject.Instantiate(m_PrefabPlayerInfoDisplayer);
-            go.transform.parent = m_TabDisplay.transform;
+            go.transform.SetParent(m_TabDisplay.transform);
             go.GetComponent<PlayerInfoDisplayer>().SetPlayerInfo(info);
         }
     }
