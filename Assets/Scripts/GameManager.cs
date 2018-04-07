@@ -101,7 +101,6 @@ public class GameManager : NetworkBehaviour
 
     IEnumerator InitCoroutine()
     {
-        Debug.Log("test");
         yield return new WaitForSeconds(2);
         List<LobbyPlayer> _lobbyPlayerList = LobbyPlayerListCustom.GetInstance().GetPlayerList();
 
