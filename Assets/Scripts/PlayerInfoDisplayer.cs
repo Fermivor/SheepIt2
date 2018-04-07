@@ -14,6 +14,7 @@ public class PlayerInfoDisplayer : MonoBehaviour {
     PlayerInfo m_playerInfo;
     // Update is called once per frame
     void Update () {
+        GetComponent<RectTransform>().localScale = Vector3.one;
         //Debug.Log(m_playerInfo);
         if (m_playerInfo)
         {
