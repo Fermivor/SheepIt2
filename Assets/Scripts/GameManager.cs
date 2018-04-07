@@ -34,7 +34,6 @@ public class GameManager : NetworkBehaviour
 
     int m_preda = -1;
     int currentSpawn = 0;
-    int pilou = 0;
     bool m_roundStarted = false;
 
 
@@ -130,8 +129,9 @@ public class GameManager : NetworkBehaviour
 
     void BeginGame()
     {
-        Debug.Log("BEGIN GAME "  + pilou);
-        ++pilou;
+        Debug.Log("BEGIN GAME");
+
+        GameData.INSTANCE.IsGamePaused = true;
 
         List<PlayerInfo> list = GameData.INSTANCE.GetPlayerInfoList();
         foreach (PlayerInfo info in list)
@@ -144,6 +144,14 @@ public class GameManager : NetworkBehaviour
 
         StartRound();
 
+    }
+
+    IEnumerator EndGame()
+    {
+        GameData.INSTANCE.IsGamePaused = true;
+        MenuManager.INSTANCE.OpenMenuEverywhere(MENUTYPE.END);
+        yield return new WaitForSeconds(10);
+        BeginGame();
     }
 
 
@@ -161,7 +169,7 @@ public class GameManager : NetworkBehaviour
         if (m_preda >= GameData.INSTANCE.GetNumberPlayer())
         {
             //tout le monde a été prédateur
-            BeginGame();
+            StartCoroutine(EndGame());
             return;
         }
 
