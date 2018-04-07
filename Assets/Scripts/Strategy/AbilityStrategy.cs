@@ -17,6 +17,9 @@ public abstract class AbilityStrategy : MonoBehaviour {
     float m_fearSpeed = 0;
     Timer m_fearTimer;
 
+    float m_slowSpeed = 0;
+    Timer m_slowTimer;
+
     bool m_isInit = false;
 
 
@@ -38,13 +41,21 @@ public abstract class AbilityStrategy : MonoBehaviour {
     {
         m_player = a_player;
         m_fearTimer = TimerFactory.INSTANCE.getTimer();
+        m_slowTimer = TimerFactory.INSTANCE.getTimer();
 
         m_isInit = true;
     }
 
+
+    //Methods to test if Modifiers are active
     public bool IsFear()
     {
         return m_fearTimer && m_fearTimer.IsTimerRunning();
+    }
+
+    public bool IsSlowed()
+    {
+        return m_slowTimer && m_slowTimer.IsTimerRunning();
     }
 
 
@@ -83,6 +94,13 @@ public abstract class AbilityStrategy : MonoBehaviour {
         if (IsFear())
         {
             result = m_fearSpeed;
+        }
+        else if(IsSlowed())
+        {
+            if ((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.Z)))
+            {
+                result = m_slowSpeed;
+            }
         }
         else
         {
@@ -139,6 +157,11 @@ public abstract class AbilityStrategy : MonoBehaviour {
         }
     }
 
+    public void Slow(float a_slowMultiplier, float a_slowDuration)
+    {
+        m_slowSpeed = m_Speed * a_slowMultiplier;
+        m_slowTimer.StartTimer(a_slowDuration);
+    }
 
     // Death
     public virtual void PlayerDeath(){}
@@ -149,6 +172,10 @@ public abstract class AbilityStrategy : MonoBehaviour {
         if (m_fearTimer)
         {
             m_fearTimer.Destroy();
+        }
+        if (m_slowTimer)
+        {
+            m_slowTimer.Destroy();
         }
         if (m_ability1Timer)
         {

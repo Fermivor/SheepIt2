@@ -132,6 +132,15 @@ public class PlayerController : NetworkBehaviour {
         }
     }
 
+    [ClientRpc]
+    public void RpcSlow(float a_slowMultiplier, float a_slowDuration)
+    {
+        if (isLocalPlayer)
+        {
+            _Strat.Slow(a_slowMultiplier, a_slowDuration);
+        }
+    }
+
     [Command]
     public void CmdTransmitInput(int a_keyCode)
     {
