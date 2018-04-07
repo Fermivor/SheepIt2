@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 public class PlayerController : NetworkBehaviour {
 
-	private AbilityStrategy _Strat = new SheepStrategy();
+	private AbilityStrategy _Strat;
 
     private void Start()
     {

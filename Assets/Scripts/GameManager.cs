@@ -30,8 +30,6 @@ public class GameManager : NetworkBehaviour
 
     NetworkStartPosition[] m_spawnPoints;
 
-    bool m_isInit = false;
-
     int m_preda = -1;
     int currentSpawn = 0;
     bool m_roundStarted = false;
@@ -98,8 +96,6 @@ public class GameManager : NetworkBehaviour
 
         StartCoroutine(InitCoroutine());
 
-
-        m_isInit = true;
     }
 
 
@@ -159,7 +155,7 @@ public class GameManager : NetworkBehaviour
     private void StartRound()
     {
 
-        Menu m = MenuManager.INSTANCE.OpenMenuEverywhere(MENUTYPE.LOADING);
+        MenuManager.INSTANCE.OpenMenuEverywhere(MENUTYPE.LOADING);
 
         Utils.DestroyChilds(m_spawnObjectsContainer.transform);
   
