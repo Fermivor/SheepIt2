@@ -132,6 +132,14 @@ public class GameData : NetworkBehaviour
         return m_playerList;
     }
 
+    public List<PlayerInfo> GetPlayerInfoListByScore()
+    {
+        m_playerList.Sort((l, r) =>  r.Score.CompareTo(l.Score));
+
+        return m_playerList;
+    }
+
+
     public int GetNumberPlayer()
     {
         return m_playerList.Count;

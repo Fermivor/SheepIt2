@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public enum MENUTYPE {NOTHING, MAIN, END, GAME, PAUSE, SCORE, CHRONO};
+public enum MENUTYPE {NOTHING, MAIN, END, GAME, PAUSE, SCORE, CHRONO, LOADING };
 
 
 [System.Serializable]
@@ -21,6 +21,7 @@ public class MenuManager : NetworkBehaviour {
 	[SerializeField]
 	MENUTYPE m_startMenu;
 
+    bool m_everOpen = false;
 
 	// Use this for initialization
 	void Start () {
@@ -37,7 +38,16 @@ public class MenuManager : NetworkBehaviour {
 
     IEnumerator StartUp()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(3f);
+        if (!m_everOpen)
+        {
+            CloseAllExcept(m_startMenu);
+        }
+
+    }
+
+    void CloseAllExcept(MENUTYPE a_type)
+    {
         foreach (MenuEntry entry in m_listMenu)
         {
             entry.m_menu.gameObject.SetActive(false);
@@ -64,7 +74,13 @@ public class MenuManager : NetworkBehaviour {
 
 	public Menu OpenMenu(MENUTYPE a_type)
 	{
-		MenuEntry menuEntry = m_listMenu.Find(x => x.m_type == a_type);
+        if (!m_everOpen)
+        {
+            m_everOpen = true;
+            CloseAllExcept(m_startMenu);
+        }
+        
+        MenuEntry menuEntry = m_listMenu.Find(x => x.m_type == a_type);
         if (menuEntry != null && a_type != m_currentMenu)
 		{
             CloseMenu();

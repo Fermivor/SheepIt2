@@ -34,9 +34,8 @@ public class GameManager : NetworkBehaviour
 
     int m_preda = -1;
     int currentSpawn = 0;
-    int pilou = 0;
     bool m_roundStarted = false;
-
+    System.Random m_random = new System.Random();
 
     void Start()
     {
@@ -130,8 +129,9 @@ public class GameManager : NetworkBehaviour
 
     void BeginGame()
     {
-        Debug.Log("BEGIN GAME "  + pilou);
-        ++pilou;
+        Debug.Log("BEGIN GAME");
+
+        GameData.INSTANCE.IsGamePaused = true;
 
         List<PlayerInfo> list = GameData.INSTANCE.GetPlayerInfoList();
         foreach (PlayerInfo info in list)
@@ -146,11 +146,22 @@ public class GameManager : NetworkBehaviour
 
     }
 
+    IEnumerator EndGame()
+    {
+        GameData.INSTANCE.IsGamePaused = true;
+        MenuManager.INSTANCE.OpenMenuEverywhere(MENUTYPE.END);
+        yield return new WaitForSeconds(10);
+        BeginGame();
+    }
+
 
 
     private void StartRound()
     {
-        Util.DestroyChilds(m_spawnObjectsContainer.transform);
+
+        Menu m = MenuManager.INSTANCE.OpenMenuEverywhere(MENUTYPE.LOADING);
+
+        Utils.DestroyChilds(m_spawnObjectsContainer.transform);
   
 
         ++m_preda;
@@ -158,7 +169,7 @@ public class GameManager : NetworkBehaviour
         if (m_preda >= GameData.INSTANCE.GetNumberPlayer())
         {
             //tout le monde a été prédateur
-            BeginGame();
+            StartCoroutine(EndGame());
             return;
         }
 
@@ -178,8 +189,7 @@ public class GameManager : NetworkBehaviour
             else
             {
                 playerInfo.IsPreda = false;
-                float preyType = UnityEngine.Random.Range(0f, 1f);
-                if(preyType > 1.5)
+                if(Utils.RandomBool(m_random))
                 {
                     type = AnimalType.SHEEP;
                 }
