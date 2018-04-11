@@ -4,7 +4,7 @@
    - Fermivor
    - Zeldarck
 
-[**Download**](https://fermivor.github.io/SheepIt2/)
+[**Download**](https://github.com/Fermivor/SheepIt2/raw/master/Download/SheepIt.zip)
 
 **Concept**
    - A predator come in your farm, try to survive with your special ability
